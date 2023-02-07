@@ -20,15 +20,15 @@ if(isset($_GET['startdate']) && isset($_GET['enddate']) && isset($_GET['tagname'
 	$startdate = $_GET['startdate'];
 	$enddate = $_GET['enddate'];
 	$tagname =  $_GET['tagname'];
-        $duration = $_GET['duration'];
-        $direction = $_GET['direction'];
+    $duration = $_GET['duration'];
+    $direction = $_GET['direction'];
 
 }else{
 	$startdate = date('Y-m-d');
 	$enddate = date('Y-m-d');
 	$tagname = 'all';
-        $duration = "0";
-        $direction = "UP";
+    $duration = "0";
+    $direction = "UP";
 }
-
+$duration = (int) $duration;
 $stmnt = $csdoutbound->csdOutboundCallSummary($startdate,$enddate,$tagname,$duration,$direction);

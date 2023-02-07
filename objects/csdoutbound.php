@@ -49,7 +49,7 @@ include_once '../../config/config.php';
         return $stmnt;
     }
 
-     public function csdOutboundCallSummary($startdate,$enddate,$tagname){
+     public function csdOutboundCallSummary($startdate,$enddate,$tagname,$duration, $direction){
         $currentdate = date('Y-m-d');
 
         if(strtotime($getdate) > strtotime($currentdate)){
@@ -74,7 +74,7 @@ include_once '../../config/config.php';
         if($stmnt->execute()){
             $outbound_summary = array();
             while($row = $stmnt->fetch(PDO::FETCH_ASSOC)){
-                $getAgentTotalRecords = $this->getTotalAgentOutboundRecords($startdate,$enddate,$tagname,$row['extension']);
+                $getAgentTotalRecords = $this->getTotalAgentOutboundRecords($startdate,$enddate,$tagname,$duration,$direction,$row['extension']);
 
                  //total answer calls of each agent
                 $totalMadeCalls = $getAgentTotalRecords->rowCount();
@@ -117,10 +117,15 @@ include_once '../../config/config.php';
     }
 
 
-    public function getTotalAgentOutboundRecords($startdate,$enddate,$tagname, $extension) {
+    public function getTotalAgentOutboundRecords($startdate,$enddate,$tagname, $duration, $direction,$extension) {
     	if($tagname == 'all'){
     		//build query
-		        $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? ORDER BY StartTimeStamp DESC";
+                if($direction == "UP"){
+                    $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC";
+                }else{
+                    $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC";
+                }
+		        
 
 		        //prepare the query
 		        $stmnt = $this->conn->prepare($query);
@@ -129,6 +134,7 @@ include_once '../../config/config.php';
 		         $stmnt->bindParam(1,$startdate);
 		          $stmnt->bindParam(2,$enddate);
 		         $stmnt->bindParam(3,$extension);
+                 $stmnt->bindParam(4,$duration);
 
 		        //execute
 		       $stmnt->execute();
@@ -136,7 +142,12 @@ include_once '../../config/config.php';
 		       return $stmnt;
     	}else{
     		//build query
-		        $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? ORDER BY StartTimeStamp DESC";
+                if($direction == 'UP'){
+                    $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC";
+                }else{
+                    $query  = "SELECT * FROM ".$this->csdoutbound." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC";
+                }
+		        
 
 		        //prepare the query
 		        $stmnt = $this->conn->prepare($query);
@@ -146,7 +157,7 @@ include_once '../../config/config.php';
 		          $stmnt->bindParam(2,$enddate);
 		         $stmnt->bindParam(3,$extension);
 		         $stmnt->bindParam(4,$tagname);
-
+                 $stmnt->bindParam(4,$duration);
 		        //execute
 		       $stmnt->execute();
 
@@ -155,7 +166,7 @@ include_once '../../config/config.php';
         
     }
 
-    public function csdOutboundCallAgentDetails($extension,$username,$startdate,$enddate,$tagname){
+    public function csdOutboundCallAgentDetails($extension,$username,$startdate,$enddate,$tagname,$duration,$direction){
 
       $getOutboundTags = $this->getTags('CSDOUTBOUND');
       
@@ -165,16 +176,28 @@ include_once '../../config/config.php';
          array_push($outboundTags_array, $row_tag['tagname']);
       }
       if($tagname == 'all'){
-         $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? ORDER BY StartTimeStamp DESC ";
+        if($direction == "UP"){
+            $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC ";
+        }
+        else{
+            $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC ";
+        }
+        
          $stmnt = $this->conn->prepare($query);
 
          //bind values from question mark (?) place holder
          $stmnt->bindParam(1, $extension);
           $stmnt->bindParam(2,$startdate);
           $stmnt->bindParam(3,$enddate);
+          $stmnt->bindParam(3,$duration);
 
       }else{
-         $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? AND tag=? ORDER BY StartTimeStamp DESC";
+        if($direction == "UP"){
+            $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? AND tag=?  AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC";
+        }else{
+            $query = "SELECT * FROM " . $this->csdoutbound . " WHERE Caller=? AND CallStatus='ANSWER' AND getDate BETWEEN ? AND ? AND tag=?  AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC";
+        }
+         
           $stmnt = $this->conn->prepare($query);
 
          //bind values from question mark (?) place holder
@@ -182,6 +205,7 @@ include_once '../../config/config.php';
          $stmnt->bindParam(2,$startdate);
           $stmnt->bindParam(3,$enddate);
           $stmnt->bindParam(4,$tagname);
+          $stmnt->bindParam(4,$direction);
       }
        
          $stmnt->execute();
