@@ -1,0 +1,41 @@
+{
+  "options": {
+    "fileName": "blend_metrics"
+  },
+  "tableData": [
+    {
+      "sheetName": "Sheet1",
+      "data": [
+        [ {
+            "text" : "NAME"
+          },
+          {
+            "text": "EXTENSION"
+          },
+          {
+            "text": "TOTAL CALLCOUNTS"
+          },
+          {
+            "text": "TOTAL CALL DURATIONS"
+          },
+          {
+            "text": "CALL COUNTS PERCENTAGE"
+          },
+          {
+            "text": "CALL DURATION PERCENTAGE"
+          },
+          {
+            "text": "TOTAL(100%)"
+          }
+       
+         
+        ]
+        
+      ],
+      "granddata" : [
+
+
+      ]
+    }
+  ]
+}

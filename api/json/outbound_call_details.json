@@ -1,0 +1,51 @@
+{
+  "options": {
+    "fileName": "outbound_call_details"
+  },
+  "tableData": [
+    {
+      "sheetName": "Sheet1",
+      "data": [
+        [ {
+            "text" : "NAME"
+          },
+          {
+            "text": "EXTENSION"
+          },
+          {
+            "text": "CALLEDNUMBER"
+          },
+          {
+            "text": "CALLER"
+          },
+          {
+            "text": "CALLSTATUS"
+          },
+          {
+            "text": "STARTTIME"
+          },
+          {
+            "text": "ENDTIME"
+          },
+          {
+            "text": "CALLDURATION"
+          },
+          {
+            "text": "CALL-RECORDINGS"
+          },
+          {
+            "text": "DATE"
+          },
+          {
+            "text": "COMMENT"
+          }, 
+          {
+            "text": "TAG"
+          }
+         
+        ]
+        
+      ]
+    }
+  ]
+}

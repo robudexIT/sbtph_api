@@ -1,0 +1,37 @@
+{
+  "options": {
+    "fileName": "callcounts_metrics"
+  },
+  "tableData": [
+    {
+      "sheetName": "Sheet1",
+      "data": [
+        [ {
+            "text" : "NAME"
+          },
+          {
+            "text": "EXTENSION"
+          },
+          {
+            "text": "TOTAL CALLCOUNTS"
+          },
+        
+          {
+            "text": "CALL COUNTS PERCENTAGE"
+          },
+        
+          {
+            "text": "TOTAL(100%)"
+          }
+       
+         
+        ]
+        
+      ],
+      "granddata" : [
+
+
+      ]
+    }
+  ]
+}
