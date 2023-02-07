@@ -157,7 +157,7 @@ include_once '../../config/config.php';
 		          $stmnt->bindParam(2,$enddate);
 		         $stmnt->bindParam(3,$extension);
 		         $stmnt->bindParam(4,$tagname);
-                 $stmnt->bindParam(4,$duration);
+                 $stmnt->bindParam(5,$duration);
 		        //execute
 		       $stmnt->execute();
 
@@ -189,7 +189,7 @@ include_once '../../config/config.php';
          $stmnt->bindParam(1, $extension);
           $stmnt->bindParam(2,$startdate);
           $stmnt->bindParam(3,$enddate);
-          $stmnt->bindParam(3,$duration);
+          $stmnt->bindParam(4,$duration);
 
       }else{
         if($direction == "UP"){
@@ -205,7 +205,7 @@ include_once '../../config/config.php';
          $stmnt->bindParam(2,$startdate);
           $stmnt->bindParam(3,$enddate);
           $stmnt->bindParam(4,$tagname);
-          $stmnt->bindParam(4,$direction);
+          $stmnt->bindParam(5,$duration);
       }
        
          $stmnt->execute();
