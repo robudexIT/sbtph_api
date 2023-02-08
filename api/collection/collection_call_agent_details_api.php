@@ -16,26 +16,34 @@ $db = $database->getConnection();
 $collection = new Collection($db);
 
 
-if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])){
+if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])  && isset($_GET['duration']) && isset($_GET['direction'])){
 
 	$extension = $_GET['extension'];
 	$name = $_GET['name'];
 	$startdate = $_GET['startdate'];
 	$enddate = $_GET['enddate'];
 	$tagname = $_GET['tagname'];
+	$duration = $_GET['duration'];
+	$direction= $_GET['direction'];
 
-	$stmnt = $collection->collectionAgentCallDetails($extension,$name,$startdate,$enddate,$tagname);
+	$duration = (int) $duration;
+
+	$stmnt = $collection->collectionAgentCallDetails($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 
 
-}elseif(isset($_GET['modalextension']) && isset($_GET['modalname']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])){
+}elseif(isset($_GET['modalextension']) && isset($_GET['modalname']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])  && isset($_GET['duration']) && isset($_GET['direction'])){
 
 	$extension = $_GET['modalextension'];
 	$name = $_GET['modalname'];
 	$startdate = $_GET['startdate'];
 	$enddate = $_GET['enddate'];
 	$tagname = $_GET['tagname'];
+	$duration = $_GET['duration'];
+	$direction= $_GET['direction'];
 
-	$stmnt = $collection->collectionAgentCallDetails($extension,$name,$startdate,$enddate,$tagname);
+	$duration = (int) $duration;
+
+	$stmnt = $collection->collectionAgentCallDetails($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 
 }else{
 	echo json_encode(array("message" => "Each Field must not empty"));

@@ -25,6 +25,8 @@ if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'
 	$duration = $_GET['duration'];
 	$direction= $_GET['direction'];
 
+	$duration = (int) $duration;
+
 	$stmnt = $csdoutbound->csdOutboundCallAgentDetails($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 
 
@@ -37,6 +39,8 @@ if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'
 	$tagname = $_GET['tagname'];
 	$duration = $_GET['duration'];
 	$direction= $_GET['direction'];
+
+	$duration = (int) $duration;
 
 	$stmnt = $csdoutbound->csdOutboundCallAgentDetails($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 

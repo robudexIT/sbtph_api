@@ -205,7 +205,7 @@ class Collection {
         $stmnt->execute();
         return $stmnt;
     }
-    public function collectionCallSummary($startdate,$enddate,$tagname){
+    public function collectionCallSummary($startdate,$enddate,$tagname,$duration,$direction){
         $currentdate = date('Y-m-d');
 
         if(strtotime($getdate) > strtotime($currentdate)){
@@ -229,7 +229,7 @@ class Collection {
         if($stmnt->execute()){
             $collection_summary = array();
             while($row = $stmnt->fetch(PDO::FETCH_ASSOC)){
-                $getAgentTotalRecords = $this->getAgentTotalRecords($startdate,$enddate,$tagname,$row['extension']);
+                $getAgentTotalRecords = $this->getAgentTotalRecords($startdate,$enddate,$tagname ,$duration,$direction,$row['extension']);
 
                  //total answer calls of each agent
                 $totalMadeCalls = $getAgentTotalRecords->rowCount();
@@ -262,7 +262,7 @@ class Collection {
                     "total_counts" => $totalMadeCalls,
                     "total_duration" => $total_duration,
                     "getdate" => $getdate,
-                    "link_details" => "calldetails/collectiondetails?extension=" . $row['extension'] . "&name=" . $row['name'] .  "&startdate=" . $startdate. "&enddate=".$enddate ."&tagname=" .$tagname
+                    "link_details" => "calldetails/collectiondetails?extension=" . $row['extension'] . "&name=" . $row['name'] .  "&startdate=" . $startdate. "&enddate=".$enddate ."&tagname=" .$tagname . "&duration=" . $duration . "&direction=" . $direction
                  );
 
                  array_push($collection_summary, $collection_agent_summary);
@@ -277,18 +277,25 @@ class Collection {
 
     
 
-    public function getAgentTotalRecords($startdate,$enddate,$tagname,$extension) {
+    public function getAgentTotalRecords($startdate,$enddate,$tagname, $duration,$direction,$extension) {
         if($tagname == 'all'){
              //build query
-            $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? ORDER BY StartTimeStamp DESC";
+            //  CONVERT(Duration, INT)>=?
+            if ($direction == "UP"){
+              $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)>=?  ORDER BY StartTimeStamp DESC";
+            }else{
+              $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)<=?  ORDER BY StartTimeStamp DESC";
+            }
+           
 
             //prepare the query
             $stmnt = $this->conn->prepare($query);
 
             //bind values from question mark (?) place holder.
              $stmnt->bindParam(1,$startdate);
-              $stmnt->bindParam(2,$enddate);
+             $stmnt->bindParam(2,$enddate);
              $stmnt->bindParam(3,$extension);
+             $stmnt->bindParam(4,$duration);
 
             //execute
 
@@ -297,7 +304,12 @@ class Collection {
            return $stmnt;
         }else{
                   //build query
-              $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? ORDER BY StartTimeStamp DESC";
+              if($direction == "UP"){
+                $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? AND CONVERT(Duration, INT)>=?ORDER BY StartTimeStamp DESC";
+              }else{
+                $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? AND CONVERT(Duration, INT)<=?ORDER BY StartTimeStamp DESC";
+              }
+             
 
               //prepare the query
               $stmnt = $this->conn->prepare($query);
@@ -307,7 +319,7 @@ class Collection {
                 $stmnt->bindParam(2,$enddate);
                $stmnt->bindParam(3,$extension);
                $stmnt->bindParam(4,$tagname);
-
+               $stmnt->bindParam(5,$duration);
               //execute
 
              $stmnt->execute();
@@ -429,7 +441,7 @@ class Collection {
 
       return $stmnt;
     }
-    public function collectionAgentCallDetails($extension,$username,$startdate,$enddate,$tagname){
+    public function collectionAgentCallDetails($extension,$username,$startdate,$enddate,$tagname,$duration,$direction){
 
       $getCollectionTags = $this->getTags('COLLECTION');
       
@@ -440,7 +452,12 @@ class Collection {
       }
        if($tagname == 'all'){
           //build query
-            $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? ORDER BY StartTimeStamp DESC";
+            if($direction == "UP"){
+              $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC";
+            }else{
+              $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC";
+            }
+
 
             //prepare the query
             $stmnt = $this->conn->prepare($query);
@@ -449,11 +466,17 @@ class Collection {
              $stmnt->bindParam(1,$startdate);
               $stmnt->bindParam(2,$enddate);
              $stmnt->bindParam(3,$extension);
+             $stmnt->bindParam(4,$duration);
 
             //execute
        }else{
                   //  build query
-        $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=? ORDER BY StartTimeStamp DESC ";
+              if($direction == "UP"){
+                $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=?  AND CONVERT(Duration, INT)>=? ORDER BY StartTimeStamp DESC ";
+              }else{
+                $query  = "SELECT * FROM ".$this->collectionteam_callsummary_table." WHERE getDate BETWEEN ? AND ? AND CallStatus='ANSWER'  AND Caller =? AND tag=?  AND CONVERT(Duration, INT)<=? ORDER BY StartTimeStamp DESC ";
+              }
+             
 
               //prepare the query
               $stmnt = $this->conn->prepare($query);
@@ -463,6 +486,7 @@ class Collection {
                 $stmnt->bindParam(2,$enddate);
                $stmnt->bindParam(3,$extension);
                $stmnt->bindParam(4,$tagname);
+               $stmnt->bindParam(5,$duration);
        }
       
 
