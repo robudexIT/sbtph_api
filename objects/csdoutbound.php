@@ -102,7 +102,7 @@ include_once '../../config/config.php';
                     "total_counts" => $totalMadeCalls,
                     "total_duration" => $total_duration,
                     "getdate" => $getdate,
-                    "link_details" => "calldetails/csdoutbounddetails?extension=" . $row['extension'] . "&name=" . $row['username'] . "&startdate=" . $startdate. "&enddate=".$enddate ."&tagname=" .$tagname
+                    "link_details" => "calldetails/csdoutbounddetails?extension=" . $row['extension'] . "&name=" . $row['username'] . "&startdate=" . $startdate. "&enddate=".$enddate ."&tagname=" .$tagname ."&duration=" .$duration . "&direction=" .$direction
 
                  );
 

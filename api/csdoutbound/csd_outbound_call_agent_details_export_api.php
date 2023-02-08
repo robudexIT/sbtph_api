@@ -15,26 +15,30 @@ $db = $database->getConnection();
 
 $csdoutbound = new CSDOUTBOUND($db);
 
-if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])){
+if( isset($_GET['extension']) && isset($_GET['name']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname']) && isset($_GET['duration']) && isset($_GET['direction'])){
 
 	$extension = $_GET['extension'];
 	$name = $_GET['name'];
 	$startdate = $_GET['startdate'];
 	$enddate = $_GET['enddate'];
 	$tagname = $_GET['tagname'];
+	$duration = $_GET['duration'];
+	$direction= $_GET['direction'];
 
-	$stmnt = $csdoutbound->csdOutboundCallAgentDetailsExport($extension,$name,$startdate,$enddate,$tagname);
+	$stmnt = $csdoutbound->csdOutboundCallAgentDetailsExport($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 
 
-}elseif(isset($_GET['modalextension']) && isset($_GET['modalname']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname'])){
+}elseif(isset($_GET['modalextension']) && isset($_GET['modalname']) && isset($_GET['startdate'])  && isset($_GET['enddate']) && isset($_GET['tagname']) && isset($_GET['duration']) && isset($_GET['direction'])){
 
 	$extension = $_GET['modalextension'];
 	$name = $_GET['modalname'];
 	$startdate = $_GET['startdate'];
 	$enddate = $_GET['enddate'];
 	$tagname = $_GET['tagname'];
+	$duration = $_GET['duration'];
+	$direction= $_GET['direction'];
 
-	$stmnt = $csdoutbound->csdOutboundCallAgentDetailsExport($extension,$name,$startdate,$enddate,$tagname);
+	$stmnt = $csdoutbound->csdOutboundCallAgentDetailsExport($extension,$name,$startdate,$enddate,$tagname,$duration,$direction);
 
 
 }else{
