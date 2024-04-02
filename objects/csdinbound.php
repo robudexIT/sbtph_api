@@ -8,7 +8,8 @@ class CSDINBOUND {
 	private $csdoutbound = "outbound";
 	private $parked_calls_tb = "waiting_calls";
 	private $voicemail = "voicemail";
-
+  private $customer_table = "customer_info";
+  
 	private $logs_table = "logs";
 	private $conn;
 	public $extension;
@@ -241,9 +242,29 @@ class CSDINBOUND {
                 if(strtotime($startdate) == strtotime($enddate)){
                     $daterange  = $startdate;
                 }
+                
+         
+        // This section query the customer details base on the  caller number. IF the caller was alredy register set the isRegistered into true. 
+        $isRegistered = false;  
+                         //build query
+        $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+
+          //prepare the query
+        $stmnt = $this->conn->prepare($query);
+
+          //bind values
+        $stmnt->bindParam(1,$row['Caller']);
+       
+        $stmnt->execute();
+
+        $num = $stmnt->rowCount();
+
+        if ($num != 0) {
+          $isRegistered = true;
+        }
 
 				 $agent = array(
-                  "name" => $username,
+                "name" => $username,
 								 "extension" => $extension,
 								 "calledNumber" => $row['CalledNumber'],
 								 "caller" => $row['Caller'],
@@ -256,7 +277,8 @@ class CSDINBOUND {
                  "comment" => $row['comment'],
                  "starttimestamp" => $row['StartTimeStamp'],
                   "tag" => $row['tag'],
-                   "daterange" => $daterange        
+                   "daterange" => $daterange,
+                  "isRegistered" =>  $isRegistered        
 							    );
 				array_push($agent_calls_details,$agent);
 			}
