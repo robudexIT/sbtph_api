@@ -9,7 +9,7 @@ class CSDINBOUND {
 	private $parked_calls_tb = "waiting_calls";
 	private $voicemail = "voicemail";
   private $customer_table = "customer_info";
-  
+
 	private $logs_table = "logs";
 	private $conn;
 	public $extension;
@@ -245,23 +245,7 @@ class CSDINBOUND {
                 
          
         // This section query the customer details base on the  caller number. IF the caller was alredy register set the isRegistered into true. 
-        $isRegistered = false;  
-                         //build query
-        $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
-
-          //prepare the query
-        $stmnt = $this->conn->prepare($query);
-
-          //bind values
-        $stmnt->bindParam(1,$row['Caller']);
-       
-        $stmnt->execute();
-
-        $num = $stmnt->rowCount();
-
-        if ($num != 0) {
-          $isRegistered = true;
-        }
+        
 
 				 $agent = array(
                 "name" => $username,
@@ -278,7 +262,7 @@ class CSDINBOUND {
                  "starttimestamp" => $row['StartTimeStamp'],
                   "tag" => $row['tag'],
                    "daterange" => $daterange,
-                  "isRegistered" =>  $isRegistered        
+                  "isRegistered" => $this->checkIfRegister($row['Caller'])        
 							    );
 				array_push($agent_calls_details,$agent);
 			}
@@ -446,6 +430,27 @@ class CSDINBOUND {
         $seconds = $seconds % 60;
          return "$hours:$minutes:$seconds";
     }
+
+   private function checkIfRegister($caller){
+    $isRegistered = false;  
+    //build query
+    $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+
+    //prepare the query
+    $stmnt = $this->conn->prepare($query);
+
+    //bind values
+    $stmnt->bindParam(1,$row['Caller']);
+
+    $stmnt->execute();
+
+    $num = $stmnt->rowCount();
+
+    if ($num != 0) {
+    $isRegistered = true;
+    }
+    return $isRegistered;
+   }
 
 
 }
