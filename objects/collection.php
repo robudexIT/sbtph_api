@@ -401,7 +401,7 @@ class Collection {
 
                  $agent = array(
                     "caller" => $agent_name,
-                     "extension" => $row['Caller'],
+                    "extension" => $row['Caller'],
                     "calledNumber" => $row['CalledNumber'],
                     "callStatus" => $row['CallStatus'],
                     "startime" => date( "h:i:s a",$StartTime),
@@ -483,7 +483,7 @@ class Collection {
 
               //bind values from question mark (?) place holder.
                $stmnt->bindParam(1,$startdate);
-                $stmnt->bindParam(2,$enddate);
+               $stmnt->bindParam(2,$enddate);
                $stmnt->bindParam(3,$extension);
                $stmnt->bindParam(4,$tagname);
                $stmnt->bindParam(5,$duration);
