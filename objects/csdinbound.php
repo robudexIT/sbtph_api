@@ -440,14 +440,14 @@ class CSDINBOUND {
     $stmnt = $this->conn->prepare($query);
 
     //bind values
-    $stmnt->bindParam(1,$row['Caller']);
+    $stmnt->bindParam(1,$caller);
 
     $stmnt->execute();
 
     $num = $stmnt->rowCount();
 
     if ($num != 0) {
-    $isRegistered = true;
+     $isRegistered = true;
     }
     return $isRegistered;
    }
