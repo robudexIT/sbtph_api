@@ -246,7 +246,7 @@ class CSDINBOUND {
          
         // This section query the customer details base on the  caller number. IF the caller was alredy register set the isRegistered into true. 
         
-
+         $customer = $this->checkCustomer($row['Caller']);
 				 $agent = array(
                 "name" => $username,
 								 "extension" => $extension,
@@ -262,7 +262,10 @@ class CSDINBOUND {
                  "starttimestamp" => $row['StartTimeStamp'],
                   "tag" => $row['tag'],
                    "daterange" => $daterange,
-                  "isRegistered" => $this->checkIfRegister($row['Caller'])        
+                  "isRegistered" => $customer['isRegistered'],
+                  "customer_id" => $customer['customer_id'],
+                  "customer_number" => $customer['customer_number'],
+                  "customer_name" => $customer['customer_name']        
 							    );
 				array_push($agent_calls_details,$agent);
 			}
@@ -378,7 +381,7 @@ class CSDINBOUND {
         $num = $stmnt->rowCount();
      
         if ($num != 0 ){
-              $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+            $row = $stmnt->fetch(PDO::FETCH_ASSOC);
              $sales_comment = array("comment" => $row['comment'], 'commentby' => $row['commentby'], "tag" => $row['tag']);
              echo json_encode($sales_comment);
 
@@ -431,8 +434,7 @@ class CSDINBOUND {
          return "$hours:$minutes:$seconds";
     }
 
-   private function checkIfRegister($caller){
-    $isRegistered = false;  
+   private function checkCustomer($caller){ 
     //build query
     $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
 
@@ -445,12 +447,19 @@ class CSDINBOUND {
     $stmnt->execute();
 
     $num = $stmnt->rowCount();
-
-    if ($num != 0) {
-     $isRegistered = true;
+   
+    $customer = [];
+ 
+    if ($num != 0){
+      $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+      $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], $isRegistered => true);   
+    } else{
+      $customer = array("customer_id" => "", 'customer_number' => $caller , "customer_name" => "", $isRegistered => false);
     }
-    return $isRegistered;
-   }
+    
 
+    return $customer;
+
+   }
 
 }
