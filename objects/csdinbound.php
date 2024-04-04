@@ -454,7 +454,7 @@ class CSDINBOUND {
 
     public function updateCustomerInfo($customer_id, $customer_number, $customer_name) {
       // $query = "UPDATE `customer_info` SET `extension`='$extension',`username`='$name',`email`='$email' WHERE `extension`='$extension'";
-      $query = "UPDATE `customer_info` SET `customer_id`='?',`customer_number`='?',`customer_name`='?' WHERE `customer_number`='?'";
+      $query = "UPDATE customer_info SET customer_id =?, customer_number=?,customer_name=? WHERE customer_number=?";
       //prepare query
       $stmnt = $this->conn->prepare($query);
 
