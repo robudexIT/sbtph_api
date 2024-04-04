@@ -425,6 +425,68 @@ class CSDINBOUND {
         }
 
 
+    } 
+
+    public function insertCustomerInfo($customer_id, $customer_number, $customer_name){
+       $query = " INSERT INTO " . $this->customer_table  . " SET  cid = :cid, customer_number = :customer_number, customer_name = :customer_name";
+        // prepare queery
+        $stmnt = $this->conn->prepare($query);
+
+        // sanitize
+        $customer_id = htmlspecialchars(strip_tags($customer_id));
+        $customer_number= htmlspecialchars(strip_tags($customer_number));
+        $customer_name= htmlspecialchars(strip_tags($customer_name));
+
+        //bind values
+        $stmnt->bindParam(1, $customer_id);
+        $stmnt->bindParam(2, $customer_number);
+        $stmnt->bindParam(3, $customer_name);
+        $stmnt->bindParam(4, $customer_number);
+
+        //execute query
+        if($stmnt->execute()){
+          return true;
+        }else{
+          return false;
+        }
+    }
+
+    public function updateCustomerInfo($customer_id, $customer_number, $customer_name) {
+      // $query = "UPDATE `customer_info` SET `extension`='$extension',`username`='$name',`email`='$email' WHERE `extension`='$extension'";
+      $query = "UPDATE `customer_info` SET `customer_id`='?',`customer_number`='?',`customer_name`='?' WHERE `customer_number`='?'";
+      //prepare query
+      $stmnt = $this->conn->prepare($query);
+
+        // sanitize
+        $customer_id = htmlspecialchars(strip_tags($customer_id));
+        $customer_number= htmlspecialchars(strip_tags($customer_number));
+        $customer_name= htmlspecialchars(strip_tags($customer_name));
+
+        //bind values
+        $stmnt->bindParam(":cid", $customer_id);
+        $stmnt->bindParam(":customer_number", $customer_number);
+        $stmnt->bindParam(":customer_name", $customer_name);
+
+      $stmnt->execute();
+    
+
+       //execute query
+       if($stmnt->execute()){
+        return true;
+      }else{
+        return false;
+      }
+      // $count = $stmnt->rowCount();
+      // if($count !=0){
+      //         $response->message = "Agent Info Successfully Updated";
+      //         $response->extension = $extension;
+      //         $response->name = $name;
+      //         $response->email = $email;
+      //          echo json_encode(array($response));
+      // }else{
+      //      echo json_encode(array("message" => "Update was not Successfull"));
+      // }
+      
     }
 
      private function secToHR($seconds) {
@@ -461,5 +523,6 @@ class CSDINBOUND {
     return $customer;
 
    }
+
 
 }
