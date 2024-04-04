@@ -337,7 +337,8 @@ class CSDINBOUND {
                 $full_url = $base_url . $date_folder .'/'.$filename;
                 $get_single_agent =  $this->getSingle($row['WhoAnsweredCall']);
                 $agent_row = $get_single_agent->fetch(PDO::FETCH_ASSOC);
-
+                 
+                $customer = $this->checkCustomer($row['Caller']);
                  $agent = array(
                     "name" => $agent_row['username'],
                     "extension" => $row['WhoAnsweredCall'],
@@ -351,7 +352,13 @@ class CSDINBOUND {
                     "getDate" => $row['getDate'],
                     "comment" => $row['comment'],
                     "starttimestamp" => $row['StartTimeStamp'],
-                    "tag" => $row['tag']
+                    "tag" => $row['tag'],
+                    "isRegistered" => $customer['isRegistered'],
+                    "customer_id" => $customer['customer_id'],
+                    "customer_number" => $customer['customer_number'],
+                    "customer_name" => $customer['customer_name'],
+                    "updated_by" =>  $customer['updated_by']                    
+
                 );
                 array_push($search_details,$agent);
             }
