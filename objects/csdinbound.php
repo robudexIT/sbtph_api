@@ -437,11 +437,12 @@ class CSDINBOUND {
         $customer_number= htmlspecialchars(strip_tags($customer_number));
         $customer_name= htmlspecialchars(strip_tags($customer_name));
 
-        //bind values
-        $stmnt->bindParam(1, $customer_id);
-        $stmnt->bindParam(2, $customer_number);
-        $stmnt->bindParam(3, $customer_name);
-        $stmnt->bindParam(4, $customer_number);
+         //bind values
+         $stmnt->bindParam(":cid", $customer_id);
+         $stmnt->bindParam(":customer_number", $customer_number);
+         $stmnt->bindParam(":customer_name", $customer_name);
+
+      
 
         //execute query
         if($stmnt->execute()){
@@ -462,12 +463,12 @@ class CSDINBOUND {
         $customer_number= htmlspecialchars(strip_tags($customer_number));
         $customer_name= htmlspecialchars(strip_tags($customer_name));
 
-        //bind values
-        $stmnt->bindParam(":cid", $customer_id);
-        $stmnt->bindParam(":customer_number", $customer_number);
-        $stmnt->bindParam(":customer_name", $customer_name);
+         //bind values
+         $stmnt->bindParam(1, $customer_id);
+         $stmnt->bindParam(2, $customer_number);
+         $stmnt->bindParam(3, $customer_name);
+         $stmnt->bindParam(4, $customer_number); 
 
-      $stmnt->execute();
     
 
        //execute query
