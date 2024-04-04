@@ -19,14 +19,15 @@ $csdinbound = new CSDINBOUND($db);
   $data = json_decode(file_get_contents("php://input"));
   echo $data->customer_id;
   //make sure data objec are not empties 
-  if(!empty($data->customer_id) && !empty($data->customer_number) && !empty($data->customer_name) ) {
+  if(!empty($data->customer_id) && !empty($data->customer_number) && !empty($data->customer_name) && !empty($data->updated_by)) {
 
   		//set values
   		$customer_id = $data->customer_id;
   		$customer_number = $data->customer_number;
   		$customer_name = $data->customer_name;
+        $updated_by = $data->updated_by;
 
-  		if($csdinbound->insertCustomerInfo($customer_id, $customer_number, $customer_name)){
+  		if($csdinbound->insertCustomerInfo($customer_id, $customer_number, $customer_name, $updated_by)){
 			
             http_response_code(201);
 	

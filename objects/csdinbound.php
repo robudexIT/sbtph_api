@@ -427,8 +427,8 @@ class CSDINBOUND {
 
     } 
 
-    public function insertCustomerInfo($customer_id, $customer_number, $customer_name){
-       $query = " INSERT INTO " . $this->customer_table  . " SET  cid = :cid, customer_number = :customer_number, customer_name = :customer_name";
+    public function insertCustomerInfo($customer_id, $customer_number, $customer_name, $updated_by){
+       $query = " INSERT INTO " . $this->customer_table  . " SET  cid = :cid, customer_number = :customer_number, customer_name = :customer_name, updated_by = :updated_by";
         // prepare queery
         $stmnt = $this->conn->prepare($query);
 
@@ -436,12 +436,13 @@ class CSDINBOUND {
         $customer_id = htmlspecialchars(strip_tags($customer_id));
         $customer_number= htmlspecialchars(strip_tags($customer_number));
         $customer_name= htmlspecialchars(strip_tags($customer_name));
+        $updated_by = htmlspecialchars(strip_tags($updated_by));
 
          //bind values
          $stmnt->bindParam(":cid", $customer_id);
          $stmnt->bindParam(":customer_number", $customer_number);
          $stmnt->bindParam(":customer_name", $customer_name);
-
+         $stmnt->bindParam(":updated_by", $updated_by);
       
 
         //execute query
@@ -452,9 +453,9 @@ class CSDINBOUND {
         }
     }
 
-    public function updateCustomerInfo($customer_id, $customer_number, $customer_name) {
+    public function updateCustomerInfo($customer_id, $customer_number, $customer_name, $updated_by ) {
       // $query = "UPDATE `customer_info` SET `extension`='$extension',`username`='$name',`email`='$email' WHERE `extension`='$extension'";
-      $query = "UPDATE customer_info SET cid =?, customer_number=?,customer_name=? WHERE customer_number=?";
+      $query = "UPDATE customer_info SET cid =?, customer_number=?,customer_name=? updated_by=?  WHERE customer_number=?";
       //prepare query
       $stmnt = $this->conn->prepare($query);
 
@@ -462,12 +463,14 @@ class CSDINBOUND {
         $customer_id = htmlspecialchars(strip_tags($customer_id));
         $customer_number= htmlspecialchars(strip_tags($customer_number));
         $customer_name= htmlspecialchars(strip_tags($customer_name));
+        $updated_by = htmlspecialchars(strip_tags($updated_by));
 
          //bind values
          $stmnt->bindParam(1, $customer_id);
          $stmnt->bindParam(2, $customer_number);
          $stmnt->bindParam(3, $customer_name);
-         $stmnt->bindParam(4, $customer_number); 
+         $stmnt->bindParam(4, $updated_by);
+         $stmnt->bindParam(5, $customer_number); 
 
     
 
@@ -488,6 +491,10 @@ class CSDINBOUND {
       //      echo json_encode(array("message" => "Update was not Successfull"));
       // }
       
+    }
+
+    public function getCustomerInfo($customer_id, $customer_number, $customer_name){
+
     }
 
      private function secToHR($seconds) {
