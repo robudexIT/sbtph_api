@@ -10,6 +10,7 @@ include_once '../../config/config.php';
     private $csdoutbound = "outbound";
     private $parked_calls_tb = "waiting_calls";
     private $voicemail = "voicemail";
+    private $customer_table = "customer_info";
 
 	private $logs_table = "logs";
 	private $conn;
@@ -250,7 +251,8 @@ include_once '../../config/config.php';
                 if(strtotime($startdate) == strtotime($enddate)){
                     $daterange  = $startdate;
                 }
-
+                $callednumber = substr($row['CalledNumber'], 3);
+                $customer = $this->checkCustomer($callednumber);
                  $agent = array(
                     "name" => $username,
                     "caller" => $row['Caller'],
@@ -265,7 +267,12 @@ include_once '../../config/config.php';
                     "comment" => $row['comment'],
                     "starttimestamp" => $row['StartTimeStamp'],
                     "tag" => $row['tag'],
-                    "daterange" => $daterange
+                    "daterange" => $daterange,
+                    "isRegistered" => $customer['isRegistered'],
+                    "customer_id" => $customer['customer_id'],
+                    "customer_number" => $customer['customer_number'],
+                    "customer_name" => $customer['customer_name'],
+                    "updated_by" =>  $customer['updated_by']  
                 );
                 array_push($csdoutbound_calls_details, $agent);
             }
@@ -441,7 +448,34 @@ include_once '../../config/config.php';
         }
      }
 
-
+     private function checkCustomer($callednumber){ 
+        //build query
+        $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+    
+        //prepare the query
+        $stmnt = $this->conn->prepare($query);
+    
+        //bind values
+        $stmnt->bindParam(1,$callednumber);
+    
+        $stmnt->execute();
+    
+        $num = $stmnt->rowCount();
+       
+        $customer = [];
+     
+        if ($num != 0){
+          $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+          $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], "updated_by" => $row['updated_by'], 'isRegistered' => true);   
+        } else{
+          $customer = array("customer_id" => "", 'customer_number' => $caller , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
+        }
+        
+    
+        return $customer;
+    
+       }
+    
 
 
  }
