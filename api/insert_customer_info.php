@@ -17,7 +17,7 @@ $db = $database->getConnection();
 $csdinbound = new CSDINBOUND($db);
 //  // get posted data
   $data = json_decode(file_get_contents("php://input"));
-
+  echo $data->customer_id;
   //make sure data objec are not empties 
   if(!empty($data->customer_id) && !empty($data->customer_number) && !empty($data->customer_name) ) {
 
