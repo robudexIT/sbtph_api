@@ -615,7 +615,7 @@ class Sales {
         $row = $stmnt->fetch(PDO::FETCH_ASSOC);
         $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], "updated_by" => $row['updated_by'], 'isRegistered' => true);   
       } else{
-        $customer = array("customer_id" => "", 'customer_number' => "" , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
+        $customer = array("customer_id" => "", 'customer_number' => $callednumber , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
       }
       
   
