@@ -12,6 +12,7 @@ class Collection {
     public $extension;
     public $name;
     public $email;
+    private $customer_table = "customer_info";
    
 
    //create database connection  when this class instantiated

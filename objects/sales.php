@@ -9,8 +9,9 @@ class Sales {
 	public $extension;
 	public $name;
 	public $email;
-    public $teamlead;
-    private $tag = "tag";
+  public $teamlead;
+  private $tag = "tag";
+  private $customer_table = "customer_info";
 	
    //create database connection  when this class instantiated
     public function __construct($db){
