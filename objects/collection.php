@@ -398,7 +398,7 @@ class Collection {
                     $agent_name = "SaleAgent";
                 }
 
-
+                $callednumber = substr($row['CalledNumber'], 3);
                  $agent = array(
                     "caller" => $agent_name,
                     "extension" => $row['Caller'],
@@ -411,7 +411,12 @@ class Collection {
                     "getDate" => $row['getDate'],
                     "comment" => $row['comment'],
                     "starttimestamp" => $row['StartTimeStamp'],
-                    "tag" => $row['tag']
+                    "tag" => $row['tag'],
+                    "isRegistered" => $customer['isRegistered'],
+                    "customer_id" => $customer['customer_id'],
+                    "customer_number" => $customer['customer_number'],
+                    "customer_name" => $customer['customer_name'],
+                    "updated_by" =>  $customer['updated_by']  
                 );
                 array_push($collection_calls_details, $agent);
             }
@@ -532,7 +537,7 @@ class Collection {
                 if(strtotime($startdate) == strtotime($enddate)){
                     $daterange  = $startdate;
                 } 
-
+                 $callednumber = substr($row['CalledNumber'], 3);
                  $agent = array(
                     "name" => $username,
                     "extension" => $extension,
@@ -547,7 +552,12 @@ class Collection {
                     "comment" => $row['comment'],
                     "starttimestamp" => $row['StartTimeStamp'],
                     "tag" => $row['tag'],
-                    "daterange" => $daterange
+                    "daterange" => $daterange,
+                    "isRegistered" => $customer['isRegistered'],
+                    "customer_id" => $customer['customer_id'],
+                    "customer_number" => $customer['customer_number'],
+                    "customer_name" => $customer['customer_name'],
+                    "updated_by" =>  $customer['updated_by']  
                 );
                 array_push($collection_calls_details, $agent);
             }
@@ -731,6 +741,35 @@ class Collection {
         $seconds = $seconds % 60;
          return "$hours:$minutes:$seconds";
     }
+
+    private function checkCustomer($callednumber){ 
+      //build query
+      $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+  
+      //prepare the query
+      $stmnt = $this->conn->prepare($query);
+  
+      //bind values
+      $stmnt->bindParam(1,$callednumber);
+  
+      $stmnt->execute();
+  
+      $num = $stmnt->rowCount();
+     
+      $customer = [];
+   
+      if ($num != 0){
+        $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+        $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], "updated_by" => $row['updated_by'], 'isRegistered' => true);   
+      } else{
+        $customer = array("customer_id" => "", 'customer_number' => "" , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
+      }
+      
+  
+      return $customer;
+  
+     }
+  
 
 }
 

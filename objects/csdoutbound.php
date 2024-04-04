@@ -420,7 +420,8 @@ include_once '../../config/config.php';
                     $agent_name = "SaleAgent";
                 }
 
-
+                $callednumber = substr($row['CalledNumber'], 3);
+                $customer = $this->checkCustomer($callednumber);
                  $agent = array(
                     "caller" => $agent_name,
                      "extension" => $row['Caller'],
@@ -433,7 +434,13 @@ include_once '../../config/config.php';
                     "getDate" => $row['getDate'],
                     "comment" => $row['comment'],
                     "starttimestamp" => $row['StartTimeStamp'],
-                    "tag" => $row['tag']
+                    "tag" => $row['tag'],
+                    "isRegistered" => $customer['isRegistered'],
+                    "customer_id" => $customer['customer_id'],
+                    "customer_number" => $customer['customer_number'],
+                    "customer_name" => $customer['customer_name'],
+                    "updated_by" =>  $customer['updated_by']  
+
                 );
                 array_push($csdoutbound_calls_details, $agent);
             }
