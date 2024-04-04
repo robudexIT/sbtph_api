@@ -265,7 +265,8 @@ class CSDINBOUND {
                   "isRegistered" => $customer['isRegistered'],
                   "customer_id" => $customer['customer_id'],
                   "customer_number" => $customer['customer_number'],
-                  "customer_name" => $customer['customer_name']        
+                  "customer_name" => $customer['customer_name'],
+                  "updated_by" =>  $customer['updated_by']     
 							    );
 				array_push($agent_calls_details,$agent);
 			}
@@ -455,7 +456,7 @@ class CSDINBOUND {
 
     public function updateCustomerInfo($customer_id, $customer_number, $customer_name, $updated_by ) {
       // $query = "UPDATE `customer_info` SET `extension`='$extension',`username`='$name',`email`='$email' WHERE `extension`='$extension'";
-      $query = "UPDATE customer_info SET cid =?, customer_number=?,customer_name=? updated_by=?  WHERE customer_number=?";
+      $query = "UPDATE customer_info SET cid =?, customer_number=?,customer_name=?,  updated_by=?  WHERE customer_number=?";
       //prepare query
       $stmnt = $this->conn->prepare($query);
 
@@ -522,9 +523,9 @@ class CSDINBOUND {
  
     if ($num != 0){
       $row = $stmnt->fetch(PDO::FETCH_ASSOC);
-      $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], 'isRegistered' => true);   
+      $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], "updated_by" => $row['updated_by'], 'isRegistered' => true);   
     } else{
-      $customer = array("customer_id" => "", 'customer_number' => $caller , "customer_name" => "", 'isRegistered' => false);
+      $customer = array("customer_id" => "", 'customer_number' => $caller , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
     }
     
 
