@@ -30,7 +30,7 @@ $csdinbound = new CSDINBOUND($db);
 			
             http_response_code(201);
 	
-            echo json_encode(array("message" => "New Customer info Was Added!"));
+            echo json_encode(array("message" => "Customer info was updated..!"));
     		
 
   		}else{
