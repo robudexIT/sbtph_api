@@ -400,6 +400,7 @@ class Collection {
                 }
 
                 $callednumber = substr($row['CalledNumber'], 3);
+                $customer = $this->checkCustomer($callednumber);
                  $agent = array(
                     "caller" => $agent_name,
                     "extension" => $row['Caller'],
@@ -539,6 +540,7 @@ class Collection {
                     $daterange  = $startdate;
                 } 
                  $callednumber = substr($row['CalledNumber'], 3);
+                 $customer = $this->checkCustomer($callednumber);
                  $agent = array(
                     "name" => $username,
                     "extension" => $extension,
