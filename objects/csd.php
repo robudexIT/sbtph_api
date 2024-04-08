@@ -11,6 +11,8 @@ class Csd {
     private $calltype = "calltype";
     private $collection_table = "collectionteam";
 
+    private $customer_table = "customer_info";
+
 	private $logs_table = "logs";
 	private $event_log = "event_log";
 	private $conn;
@@ -89,7 +91,7 @@ class Csd {
                      $EndTime = date("h:i:s a",$EndTime);
                    }
 
-
+                   $customer = $this->checkCustomer($row['Caller']);
                     $missedcall = array(
                              "startime" =>  $StartTime,
                              "starttimestamp" => $row['StartTimeStamp'],
@@ -99,7 +101,13 @@ class Csd {
                              "callStatus" => $row['CallStatus'],
                              "comment" => $row['comment'],
                              "commentby" => $row['commentby'],
-                             "getDate" => $row['getDate']
+                             "getDate" => $row['getDate'],
+                             "isRegistered" => $customer['isRegistered'],
+                             "customer_id" => $customer['customer_id'],
+                             "customer_number" => $customer['customer_number'],
+                             "customer_name" => $customer['customer_name'],
+                             "updated_by" =>  $customer['updated_by']     
+
                        );
 
                   array_push($missedcalls_array,$missedcall);
@@ -1045,5 +1053,33 @@ class Csd {
         $seconds = $seconds % 60;
          return "$hours:$minutes:$seconds";
     }
+
+    private function checkCustomer($caller){ 
+      //build query
+      $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+  
+      //prepare the query
+      $stmnt = $this->conn->prepare($query);
+  
+      //bind values
+      $stmnt->bindParam(1,$caller);
+  
+      $stmnt->execute();
+  
+      $num = $stmnt->rowCount();
+     
+      $customer = [];
+   
+      if ($num != 0){
+        $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+        $customer = array("customer_id" => $row['cid'], 'customer_number' => $row['customer_number'], "customer_name" => $row['customer_name'], "updated_by" => $row['updated_by'], 'isRegistered' => true);   
+      } else{
+        $customer = array("customer_id" => "", 'customer_number' => $caller , "customer_name" => "", "updated_by" => "", 'isRegistered' => false);
+      }
+      
+  
+      return $customer;
+  
+     }
 
 }
