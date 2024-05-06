@@ -1055,7 +1055,7 @@ class Csd {
   
       $result = $stmnt->execute();
       $row = $stmnt->fetch(PDO::FETCH_ASSOC);
-      echo json_encode($row);
+      echo json_encode($row['Count(*)']);
      }
 
      private function secToHR($seconds) {
