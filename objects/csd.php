@@ -1054,8 +1054,8 @@ class Csd {
       $stmnt = $this->conn->prepare($query);
   
       $result = $stmnt->execute();
-      $num = $stmnt->rowCount();
-      echo json_encode($num);
+      $row = $stmnt->fetch(PDO::FETCH_ASSOC);
+      echo json_encode($row);
      }
 
      private function secToHR($seconds) {
