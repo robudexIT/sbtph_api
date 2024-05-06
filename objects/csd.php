@@ -1047,6 +1047,16 @@ class Csd {
               return false;   
     }
 
+    public function getTotalRegisteredCustomer(){
+      $query = "SELECT Count(*) FROM  ".$this->customer_table." ";
+  
+      //prepare the query
+      $stmnt = $this->conn->prepare($query);
+  
+      $result = $stmnt->execute();
+      echo json_encode($result);
+     }
+
      private function secToHR($seconds) {
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds / 60) % 60);
