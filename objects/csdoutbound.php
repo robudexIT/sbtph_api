@@ -341,7 +341,7 @@ include_once '../../config/config.php';
     public function putOutboundCallComment($starttimestamp, $getdate, $caller, $comment,$commentby,$tag) {
         
         //build query
-       $query = "UPDATE `outbound` SET `comment`='$comment', `commentby`='$commentby', `tag`='$tag' WHERE `StartTimeStamp`='$starttimestamp' AND `getDate`='$getdate' AND `Caller`='$caller'";
+       $query = "UPDATE `csd_outbound` SET `comment`='$comment', `commentby`='$commentby', `tag`='$tag' WHERE `StartTimeStamp`='$starttimestamp' AND `getDate`='$getdate' AND `Caller`='$caller'";
         //prepare query
         $stmnt = $this->conn->prepare($query);
         //excute

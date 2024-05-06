@@ -5,7 +5,7 @@ class Csd {
 	//CSD class properties
 	private $csdinbound_table = "csdinbound";
 	private $inbound_callstatus_table = "inbound_callstatus";
-    private $csdoutbound = "outbound";
+    private $csdoutbound = "csd_outbound";
     private $parked_calls_tb = "waiting_calls";
     private $voicemail = "voicemail";
     private $calltype = "calltype";
