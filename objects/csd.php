@@ -1054,7 +1054,8 @@ class Csd {
       $stmnt = $this->conn->prepare($query);
   
       $result = $stmnt->execute();
-      echo json_encode($result);
+      $num = $stmnt->rowCount();
+      echo json_encode($num);
      }
 
      private function secToHR($seconds) {
