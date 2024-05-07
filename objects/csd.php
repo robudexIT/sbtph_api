@@ -1110,7 +1110,7 @@ class Csd {
 
 
 	    //delete query
-	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$customer_number' AND `cid`='$customer_id' AND 'customer_name'='$customer_name' AND 'updated_by'='$updated_by'";
+	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$customer_number' AND `cid`='$customer_id' AND  `customer_name`='$customer_name' AND `updated_by`='$updated_by'";
 
 	    // prepare query
 	    $stmnt = $this->conn->prepare($query);
