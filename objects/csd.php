@@ -30,6 +30,10 @@ class Csd {
   public $action;
   public $performed_by;
   public $description;
+  public $customer_number;
+  public $customer_id;
+  public $customer_name;
+  public $updated_by;
 
   // end
 
@@ -1101,18 +1105,18 @@ class Csd {
          return "$hours:$minutes:$seconds";
     }
     
-    public function deleteCustomer($customer_number,$customer_id, $customer_name, $updated_by) {
+    public function deleteCustomer() {
 	    // sanitize
-	    $customer_number=htmlspecialchars(strip_tags($customer_number));
-      $customer_id = htmlspecialchars(strip_tags($customer_id));
-      $customer_name = htmlspecialchars(strip_tags($customer_name));
-      $updated_by = htmlspecialchars(strip_tags($updated_by));
+	    $this->customer_number=htmlspecialchars(strip_tags($this->customer_number));
+      $this->customer_id = htmlspecialchars(strip_tags($this->customer_id));
+      $this->customer_name = htmlspecialchars(strip_tags($this->customer_name));
+      $this->updated_by = htmlspecialchars(strip_tags($this->updated_by));
 
-      echo json_encode($customer_number);
+
       return;
  
 	    //delete query
-	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$customer_number' AND `cid`='$customer_id' AND  `customer_name`='$customer_name' AND `updated_by`='$updated_by'";
+	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$this->customer_number' AND `cid`='$this->customer_id' AND  `customer_name`='$this->customer_name' AND `updated_by`='$this->updated_by'";
       
        
 	    // prepare query
