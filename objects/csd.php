@@ -1058,13 +1058,50 @@ class Csd {
       echo json_encode(array("customer_registered_count" => $row['Count(*)']));
      }
 
+    public function searchCustomer($customer_number){
+
+          //build query
+          $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
+  
+          //prepare the query
+          $stmnt = $this->conn->prepare($query);
+      
+          //bind values
+          $stmnt->bindParam(1,$customer_number);
+      
+          $stmnt->execute();
+      
+          $num = $stmnt->rowCount();
+
+          if ($num != 0){
+            $customer_array = array();
+            while($row = $stmnt->fetch(PDO::FETCH_ASSOC)){
+              $customer = array(
+                "customer_number" => $row['customer_number'],
+                "customer_id" => $row['cid'],
+                "customer_name" => $row['customer_name']
+            );
+            array_push($customer_array, $customer);
+
+          }
+            echo json_encode($customer_array);
+
+
+          }else {
+            echo json_encode(array("message" => 'No Found Record'));
+          }
+
+    }  
+
+
      private function secToHR($seconds) {
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds / 60) % 60);
         $seconds = $seconds % 60;
          return "$hours:$minutes:$seconds";
     }
-
+    
+     
     private function checkCustomer($caller){ 
       //build query
       $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
