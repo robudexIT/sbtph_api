@@ -1117,7 +1117,7 @@ class Csd {
       
       //  return;
 	    //delete query
-	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$this->customer_number' AND `cid`='$this->customer_id' AND  `customer_name`='$this->customer_name' AND `updated_by`='$this->updated_by'";
+	    $query = "DELETE FROM `customer_info` WHERE `customer_number`='$this->customer_number' AND `cid`='$this->customer_id' AND  `customer_name`='$this->customer_name' AND `updated_by`='$this->updated_by'";
       $query = "DELETE FROM `inbound_callstatus` WHERE `WhoAnsweredCall`='$extension'";
        
 	    // prepare query
@@ -1129,9 +1129,9 @@ class Csd {
         if($count !=0){
       
 
-                 echo json_encode(array("message" => "Agent Successfully Deleted"));
+                 echo json_encode(array("message" => "Customer Successfully Deleted"));
         }else{
-             echo json_encode(array("message" => "Agent Cannot be Deleted"));
+             echo json_encode(array("message" => "Customer Cannot be Deleted Or Not Found"));
         }
      }
 
