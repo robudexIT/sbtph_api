@@ -22,5 +22,6 @@ $csd = new Csd($db);
   $customer_number = $data->customer_number;
   $customer_id = $data->customer_id;
   $customer_name = $data->customer;
+  $updated_by = $data->update_by;
   
-  $csd->deleteCustomer($customer_number,$customer_id, $customer_name);
+  $csd->deleteCustomer($customer_number,$customer_id, $customer_name,$update_by);
