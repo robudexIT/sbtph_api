@@ -20,9 +20,9 @@ $csd = new Csd($db);
    
 
 
-  $this->customer_number = $data->customer_number;
-  $this->customer_id = $data->customer_id;
-  $this->customer_name = $data->customer;
-  $this->updated_by = $data->updated_by;
+  $csd->customer_number = $data->customer_number;
+  $csd->customer_id = $data->customer_id;
+  $csd->customer_name = $data->customer;
+  $csd->updated_by = $data->updated_by;
   
   $csd->deleteCustomer();
