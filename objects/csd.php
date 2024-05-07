@@ -1083,7 +1083,8 @@ class Csd {
               $customer = array(
                 "customer_number" => $row['customer_number'],
                 "customer_id" => $row['cid'],
-                "customer_name" => $row['customer_name']
+                "customer_name" => $row['customer_name'],
+                "updated_by" => $row['updated_by']
             );
             array_push($customer_array, $customer);
 
