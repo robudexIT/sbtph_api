@@ -1113,7 +1113,7 @@ class Csd {
       $this->updated_by = htmlspecialchars(strip_tags($this->updated_by));
 
      
-      echo $this->customer_number . $this->customer_number . $this->customer_name .  $this->updated_by;
+      echo $this->customer_number . $this->customer_id . $this->customer_name .  $this->updated_by;
       
        return;
 	    //delete query
