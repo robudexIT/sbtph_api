@@ -22,7 +22,7 @@ $csd = new Csd($db);
 
   $csd->customer_number = $data->customer_number;
   $csd->customer_id = $data->customer_id;
-  $csd->customer_name = $data->customer;
+  $csd->customer_name = $data->customer_name;
   $csd->updated_by = $data->updated_by;
   
   $csd->deleteCustomer();

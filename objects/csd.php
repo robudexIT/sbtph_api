@@ -1113,9 +1113,9 @@ class Csd {
       $this->updated_by = htmlspecialchars(strip_tags($this->updated_by));
 
      
-      echo $this->customer_number . $this->customer_id . $this->customer_name .  $this->updated_by;
+      // echo $this->customer_number . $this->customer_id . $this->customer_name .  $this->updated_by;
       
-       return;
+      //  return;
 	    //delete query
 	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$this->customer_number' AND `cid`='$this->customer_id' AND  `customer_name`='$this->customer_name' AND `updated_by`='$this->updated_by'";
       $query = "DELETE FROM `inbound_callstatus` WHERE `WhoAnsweredCall`='$extension'";
