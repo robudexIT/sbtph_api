@@ -1108,10 +1108,13 @@ class Csd {
       $customer_name = htmlspecialchars(strip_tags($customer_name));
       $updated_by = htmlspecialchars(strip_tags($updated_by));
 
-
+      echo json_encode($customer_number);
+      return;
+ 
 	    //delete query
 	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$customer_number' AND `cid`='$customer_id' AND  `customer_name`='$customer_name' AND `updated_by`='$updated_by'";
-
+      
+       
 	    // prepare query
 	    $stmnt = $this->conn->prepare($query);
 

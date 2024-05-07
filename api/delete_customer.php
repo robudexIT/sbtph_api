@@ -18,7 +18,7 @@ $csd = new Csd($db);
 //  // get posted data
   $data = json_decode(file_get_contents("php://input"));
    
-  echo $data;
+
 
   $customer_number = $data->customer_number;
   $customer_id = $data->customer_id;
