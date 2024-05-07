@@ -1101,7 +1101,31 @@ class Csd {
          return "$hours:$minutes:$seconds";
     }
     
-     
+    public function deleteCustomer($customer_number,$customer_id, $customer_name) {
+	    // sanitize
+	    $customer_number=htmlspecialchars(strip_tags($customer_number));
+      $customer_id = htmlspecialchars(strip_tags($customer_id));
+      $customer_name = htmlspecialchars(strip_tags($customer_name));
+
+
+	    //delete query
+	    $query = "DELETE FROM `customer_info_05012024` WHERE `customer_number`='$customer_number' AND `cid`='$customer_id' AND 'customer_name'='$customer_name'";
+
+	    // prepare query
+	    $stmnt = $this->conn->prepare($query);
+
+	    $stmnt->execute();
+
+    	 $count = $stmnt->rowCount();
+        if($count !=0){
+      
+
+                 echo json_encode(array("message" => "Agent Successfully Deleted"));
+        }else{
+             echo json_encode(array("message" => "Agent Cannot be Deleted"));
+        }
+     }
+
     private function checkCustomer($caller){ 
       //build query
       $query = "SELECT * FROM  ".$this->customer_table." WHERE customer_number=?";
