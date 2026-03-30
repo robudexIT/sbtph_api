@@ -7,7 +7,7 @@ date_default_timezone_set('Asia/Tokyo');
 // // database connection will be here...
 
 // //include database and object files
-include_once '../config/database.php';
+include_once '../config/database_write.php';
 include_once '../objects/csd.php';
 
 $database = new Database();

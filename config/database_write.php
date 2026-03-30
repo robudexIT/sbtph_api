@@ -1,0 +1,37 @@
+<?php
+
+class Database{
+
+    //database properties
+
+    private $host = "218.45.25.230";
+    private $dbname = "sbtphcsd";
+    private $username = "python";
+    private $password = "sbtph@2018";
+
+ 
+    private $db;
+
+    //database method/function
+
+    public function getConnection(){
+
+    		$conn = NULL;
+    	
+    	try{
+    			$conn = new PDO("mysql:host=$this->host;dbname=$this->dbname", "$this->username", "$this->password");
+    			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    	}catch (PDOExeption $e){
+    		echo 'ERROR: ' . $e->getMessage();
+    	}
+
+    	$this->db = $conn;
+    	return $this->db;
+
+    }
+
+
+
+
+}
